@@ -1,0 +1,208 @@
+---
+layout: page
+title: Поиск
+permalink: /search/
+---
+
+<div class="search-results-page">
+  <div class="search-form">
+    <input type="text" id="search-input" class="search-input" placeholder="Введите поисковый запрос..." />
+    <button id="search-button" class="search-button">
+      <i class="ph ph-magnifying-glass"></i> Поиск
+    </button>
+  </div>
+
+  <div id="search-results" class="search-results">
+    <p class="search-instructions">Введите поисковый запрос и нажмите кнопку "Поиск"</p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+    const searchResults = document.getElementById('search-results');
+
+    // Get the search query from URL parameter if present
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryParam = urlParams.get('q');
+
+    if (queryParam) {
+      searchInput.value = queryParam;
+      performSearch(queryParam);
+    }
+
+    searchButton.addEventListener('click', function() {
+      const query = searchInput.value.trim();
+      if (query.length > 0) {
+        performSearch(query);
+      }
+    });
+
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const query = searchInput.value.trim();
+        if (query.length > 0) {
+          performSearch(query);
+        }
+      }
+    });
+
+    function performSearch(query) {
+      // Update URL with search query
+      const newUrl = window.location.pathname + '?q=' + encodeURIComponent(query);
+      window.history.pushState({ path: newUrl }, '', newUrl);
+
+      // Show loading indicator
+      searchResults.innerHTML = '<p class="loading">Поиск...</p>';
+
+      // Fetch the posts JSON data
+      fetch('/search.json')
+        .then(response => response.json())
+        .then(data => {
+          const results = data.filter(item => {
+            const titleMatch = item.title.toLowerCase().includes(query.toLowerCase());
+            const contentMatch = item.content.toLowerCase().includes(query.toLowerCase());
+            return titleMatch || contentMatch;
+          });
+
+          displayResults(results, query);
+        })
+        .catch(error => {
+          console.error('Error fetching search data:', error);
+          searchResults.innerHTML = '<p class="error">Произошла ошибка при поиске. Пожалуйста, попробуйте позже.</p>';
+        });
+    }
+
+    function displayResults(results, query) {
+      if (results.length === 0) {
+        searchResults.innerHTML = `<p class="no-results">По запросу "${query}" ничего не найдено</p>`;
+        return;
+      }
+
+      let resultsHTML = `<p>Найдено ${results.length} результатов по запросу "${query}":</p><ul class="results-list">`;
+
+      results.forEach(item => {
+        resultsHTML += `
+          <li class="result-item">
+            <a href="${item.url}" class="result-link">
+              <h3 class="result-title">${item.title}</h3>
+            </a>
+            <p class="result-snippet">${getSnippet(item.content, query)}</p>
+            <p class="result-date">${new Date(item.date).toLocaleDateString('ru-RU')}</p>
+          </li>
+        `;
+      });
+
+      resultsHTML += '</ul>';
+      searchResults.innerHTML = resultsHTML;
+    }
+
+    function getSnippet(content, query) {
+      const lowerContent = content.toLowerCase();
+      const lowerQuery = query.toLowerCase();
+      const index = lowerContent.indexOf(lowerQuery);
+
+      if (index === -1) {
+        // If query not found in content, return first 150 chars
+        return content.substring(0, 150) + '...';
+      }
+
+      // Create a snippet with 50 chars before and after the query
+      const start = Math.max(0, index - 50);
+      const end = Math.min(content.length, index + query.length + 50);
+      let snippet = content.substring(start, end);
+
+      // Add ellipsis if needed
+      if (start > 0) {
+        snippet = '...' + snippet;
+      }
+      if (end < content.length) {
+        snippet = snippet + '...';
+      }
+
+      return snippet;
+    }
+  });
+</script>
+
+<style>
+  .search-results-page {
+    max-width: 100%;
+  }
+
+  .search-form {
+    display: flex;
+    margin-bottom: 2rem;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #ccc6c7;
+    border-radius: 4px 0 0 4px;
+  }
+
+  .search-button {
+    padding: 0.75rem 1rem;
+    background-color: #85a0c7;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .search-button:hover {
+    background-color: #6d89b1;
+  }
+
+  .search-results {
+    margin-top: 1rem;
+  }
+
+  .search-instructions {
+    color: #787676;
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .loading, .error, .no-results {
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .error {
+    color: #ff6b6b;
+  }
+
+  .results-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .result-item {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .result-title {
+    margin-bottom: 0.5rem;
+  }
+
+  .result-snippet {
+    margin-bottom: 0.5rem;
+    color: #ccc6c7;
+  }
+
+  .result-date {
+    font-size: 0.85rem;
+    color: #787676;
+  }
+</style>

@@ -1,0 +1,36 @@
+title: ЧЕРВЕПЕДИЯ
+email:
+description: "Черветред — антироссийская ветка тредов на Дваче, созданная для антигосударственных и антипутинских высказываний."
+baseurl: ""
+url: ""
+github_username:
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+paginate: 5
+paginate_path: "/page/:num/"
+
+# SEO settings
+keywords: "Черветред, Червепедия, Двач, Кинаман, Dr. Crow, создатель черветреда, Червепедия"
+author:
+lang: ru_RU
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - README.md
+
+# Collections
+collections:
+  pages:
+    output: true
+    permalink: /:path/

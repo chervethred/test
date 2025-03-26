@@ -1,0 +1,23 @@
+---
+layout: null
+---
+[
+  {% for post in site.posts %}
+    {
+      "title": {{ post.title | jsonify }},
+      "url": {{ post.url | relative_url | jsonify }},
+      "date": {{ post.date | date_to_xmlschema | jsonify }},
+      "content": {{ post.content | strip_html | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %},
+  {% for page in site.pages %}
+    {% if page.title and page.layout != "null" and page.title != "Поиск" %}
+    {
+      "title": {{ page.title | jsonify }},
+      "url": {{ page.url | relative_url | jsonify }},
+      "date": {{ site.time | date_to_xmlschema | jsonify }},
+      "content": {{ page.content | strip_html | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endif %}
+  {% endfor %}
+]
