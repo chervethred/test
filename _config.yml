@@ -1,7 +1,7 @@
 title: ЧЕРВЕПЕДИЯ
 email:
 description: "Черветред — антироссийская ветка тредов на Дваче, созданная для антигосударственных и антипутинских высказываний."
-baseurl: ""
+baseurl: "/test"
 url: ""
 github_username:
 markdown: kramdown
