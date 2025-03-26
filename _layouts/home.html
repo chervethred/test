@@ -1,0 +1,74 @@
+---
+layout: default
+---
+
+<div class="posts-container">
+  {% for post in paginator.posts %}
+    <article class="post-item">
+      <div class="post-header">
+        {% if post.subtitle %}
+          <h2 class="post-subtitle">{{ post.subtitle }}</h2>
+        {% endif %}
+        <h1 class="post-title">
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </h1>
+      </div>
+
+      <div class="post-content">
+        {% if post.image %}
+          <div class="post-image-container">
+            <img src="{{ post.image | relative_url }}" alt="{{ post.title }}" class="post-image" />
+          </div>
+        {% endif %}
+
+        <div class="post-excerpt">
+          {{ post.excerpt | strip_html | truncatewords: 50 }}
+        </div>
+
+        <div class="post-meta">
+          <div class="post-date">
+            <i class="ph ph-calendar"></i>
+            <time datetime="{{ post.date | date_to_xmlschema }}">
+              {{ post.date | date: "%d.%m.%Y" }}
+            </time>
+          </div>
+
+          <a href="{{ post.url | relative_url }}" class="read-more-btn">Раскрыть</a>
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+
+  <!-- Pagination -->
+  {% if paginator.total_pages > 1 %}
+  <div class="pagination">
+    <ul>
+      {% if paginator.previous_page %}
+        <li class="prev">
+          <a href="{{ paginator.previous_page_path | prepend: site.baseurl }}">
+            <i class="ph ph-arrow-left"></i>
+          </a>
+        </li>
+      {% endif %}
+
+      {% for page in (1..paginator.total_pages) %}
+        <li class="page-number {% if page == paginator.page %}active{% endif %}">
+          {% if page == 1 %}
+            <a href="{{ '/' | relative_url }}">{{ page }}</a>
+          {% else %}
+            <a href="{{ site.paginate_path | prepend: site.baseurl | replace: ':num', page }}">{{ page }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+
+      {% if paginator.next_page %}
+        <li class="next">
+          <a href="{{ paginator.next_page_path | prepend: site.baseurl }}">
+            <i class="ph ph-arrow-right"></i>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+  {% endif %}
+</div>

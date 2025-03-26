@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "ru_RU" }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{{ site.description }}">
+  <meta name="keywords" content="{{ site.keywords }}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta property="og:description" content="{{ site.description }}">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="twitter:title" content="{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta property="twitter:description" content="{{ site.description }}">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/css/regular.css" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+  {% seo %}
+</head>
+<body class="dark-theme">
+  <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-inner">
+        <div class="site-header">
+          <h1 class="site-title">{{ site.title }}</h1>
+          <p class="site-description">{{ site.description }}</p>
+        </div>
+
+        <div class="site-logo">
+          <img src="{{ '/assets/images/logo.png' | relative_url }}" alt="{{ site.title }}" />
+        </div>
+
+        <div class="site-navigation">
+          {% include navigation.html %}
+        </div>
+
+        <div class="search-box">
+          <form action="/search" method="get">
+            <input type="text" name="q" placeholder="Поиск" />
+            <button type="submit"><i class="ph ph-magnifying-glass"></i></button>
+          </form>
+        </div>
+
+        <div class="social-links">
+          <a href="https://t.me/" target="_blank" rel="noopener"><i class="ph ph-telegram-logo"></i></a>
+          <a href="https://youtube.com/" target="_blank" rel="noopener"><i class="ph ph-youtube-logo"></i></a>
+          <a href="https://twitter.com/" target="_blank" rel="noopener"><i class="ph ph-twitter-logo"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      {{ content }}
+
+      <div class="navigation-buttons">
+        <a href="#" class="scroll-to-top" title="Наверх"><i class="ph ph-arrow-up"></i></a>
+        <a href="#" class="scroll-to-bottom" title="Вниз"><i class="ph ph-arrow-down"></i></a>
+      </div>
+
+      <footer class="site-footer">
+        <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. Все права защищены.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+</body>
+</html>

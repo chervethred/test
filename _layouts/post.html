@@ -1,0 +1,58 @@
+---
+layout: default
+---
+
+<article class="post-full">
+  <div class="post-header">
+    {% if page.subtitle %}
+      <h2 class="post-subtitle">{{ page.subtitle }}</h2>
+    {% endif %}
+    <h1 class="post-title">{{ page.title }}</h1>
+  </div>
+
+  <div class="post-content">
+    {% if page.image %}
+      <div class="post-image-container">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" class="post-image" />
+      </div>
+    {% endif %}
+
+    <div class="post-meta">
+      <div class="post-date">
+        <i class="ph ph-calendar"></i>
+        <time datetime="{{ page.date | date_to_xmlschema }}">
+          {{ page.date | date: "%d.%m.%Y" }}
+        </time>
+      </div>
+    </div>
+
+    <div class="post-body">
+      {{ content }}
+    </div>
+  </div>
+
+  <!-- Telegram Discussion Widget -->
+  <div class="telegram-discussion">
+    <script async src="https://telegram.org/js/telegram-widget.js?22"
+            data-telegram-discussion="название_канала/ID_сообщения"
+            data-comments-limit="5"
+            data-color="343638"
+            data-dark="1"></script>
+  </div>
+
+  <div class="post-navigation">
+    {% if page.previous.url %}
+      <a class="prev" href="{{ page.previous.url | relative_url }}">
+        <i class="ph ph-arrow-left"></i>
+        <span>{{ page.previous.title }}</span>
+      </a>
+    {% endif %}
+
+    {% if page.next.url %}
+      <a class="next" href="{{ page.next.url | relative_url }}">
+        <span>{{ page.next.title }}</span>
+        <i class="ph ph-arrow-right"></i>
+      </a>
+    {% endif %}
+  </div>
+</article>
