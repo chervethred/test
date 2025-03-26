@@ -1,0 +1,22 @@
+<nav class="main-navigation">
+  <ul class="menu-items">
+    <li class="menu-item{% if page.url == '/' %} active{% endif %}">
+      <a href="{{ '/' | relative_url }}">Главная</a>
+    </li>
+    <li class="menu-item{% if page.url contains '/chervethread/' %} active{% endif %}">
+      <a href="{{ '/chervethread/' | relative_url }}">Черветред</a>
+    </li>
+    <li class="menu-item{% if page.url contains '/manifest/' %} active{% endif %}">
+      <a href="{{ '/manifest/' | relative_url }}">Манифест черванов</a>
+    </li>
+    <li class="menu-item{% if page.url contains '/about/' %} active{% endif %}">
+      <a href="{{ '/about/' | relative_url }}">О нас</a>
+    </li>
+    <li class="menu-item{% if page.url contains '/support/' %} active{% endif %}">
+      <a href="{{ '/support/' | relative_url }}">Support</a>
+    </li>
+    <li class="menu-item{% if page.url contains '/contacts/' %} active{% endif %}">
+      <a href="{{ '/contacts/' | relative_url }}">Контакты</a>
+    </li>
+  </ul>
+</nav>
